@@ -1,6 +1,10 @@
 /* Images taken from: https://wallpapercave.com/wp/R5Vj6yD.jpg, https://holidayturn.com/wp-content/uploads/2017/12/Safari-Court-Hotel-Pool.jpg, http://getwallpapers.com/wallpaper/full/6/6/e/795475-most-popular-cool-sunset-backgrounds-3840x2160-for-hd.jpg */
 
 
+.disclaimer {
+    font-size: 10px;
+}
+
 .title {
     font-size: 70px;
     position: absolute;
@@ -92,6 +96,20 @@ h3.chart-title {
     background-repeat: no-repeat;
 }
 
+.likeButton {
+    background-image: url('../images/likeIcon.png');
+    height: 62px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.no-button {
+    height: 62px;
+    width: 100px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
 
 #prevButton, #nextButton {
     cursor: pointer;

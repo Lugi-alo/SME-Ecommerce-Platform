@@ -27,7 +27,7 @@ namespace Dissertation.Pages.Tourist
             {
                 ServiceListing = await _context.ServiceListings
                     .Include(sl => sl.Reviews)
-                    .ThenInclude(r => r.User) // Include the User navigation property
+                    .ThenInclude(r => r.User)
                     .FirstOrDefaultAsync(sl => sl.Id == serviceId);
 
                 if (ServiceListing == null)
@@ -35,7 +35,6 @@ namespace Dissertation.Pages.Tourist
                     return NotFound();
                 }
 
-                // Optionally, you can assign the Reviews separately if you need them
                 Reviews = ServiceListing.Reviews.ToList();
 
                 return Page();
@@ -44,6 +43,20 @@ namespace Dissertation.Pages.Tourist
             {
                 return RedirectToPage("/Error");
             }
+        }
+
+        public async Task<IActionResult> OnPostLikeReviewAsync(int reviewId)
+        {
+            var review = await _context.Reviews.FindAsync(reviewId);
+            if (review == null)
+            {
+                return NotFound();
+            }
+
+            review.LikeCount++;
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage(new { serviceId = review.ServiceId });
         }
     }
 }

@@ -22,9 +22,19 @@
         {
             <div class="review-container">
                 <h3> Left by User: @review.User.FirstName @review.User.LastName</h3>
+                <p> @review.LikeCount</p>
                 <p>Rating: @review.Rating</p>
                 <p>Review: @review.ReviewText</p>
+
+                <form method = "post" asp-page-handler="LikeReview">
+                    <input type="hidden" name="reviewId" value="@review.Id" />
+                        <button class="no-button" type="submit">
+                            <div class="likeButton"> </div>
+                        </button>
+                </form>
+
                 <p> @review.Timestamp</p>
+                <p class="disclaimer"> This review is a subjective opinion left by a user on our platform. These reviews are moderated by the admins.</p>
             </div>
         }
     }
