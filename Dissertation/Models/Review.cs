@@ -12,7 +12,7 @@
         public int ServiceId { get; set; }
         public ServiceListings ServiceListings { get; set; }
 
-
+        public AppUser User { get; set; }
 
     }
 }

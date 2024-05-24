@@ -7,45 +7,48 @@
 <h2>Users and Roles</h2>
 
 <div class="big-container">
-@foreach (var user in Model.UsersWithRoles)
-{
-    <div class="user-container">
-        <div class="user-info">
-            <span>User ID: @user.UserId</span>
-            <span>User Name: @user.UserName</span>
-            <span>Roles: @string.Join(", ", user.Roles)</span>
+    @foreach (var user in Model.UsersWithRoles)
+    {
+        <div class="user-container">
+            <div class="user-info">
+                <span>User ID: @user.UserId</span>
+                <span>Display Name: @user.UserName</span>
+                <span>Roles: @string.Join(", ", user.Roles)</span>
+            </div>
+            <div class="user-roles">
+                <form method="post" asp-page-handler="SaveRole">
+                    <input type="hidden" name="userId" value="@user.UserId" />
+                    @foreach (var role in Model.AllRoles)
+                    {
+                        <label>
+                            <input type="checkbox" name="roles" value="@role" @(user.Roles.Contains(role) ? "checked" : "") />
+                            @role
+                        </label>
+                    }
+                    <button type="submit" class="saveButtonRoles">Save Roles</button>
+                </form>
+                <a asp-page-handler="DeleteUser" asp-route-userId="@user.UserId" class="delete-button-right">Delete User</a>
+            </div>
         </div>
-        <div class="user-roles">
-            @foreach (var role in Model.AllRoles)
-            {
-                <label>
-                    <input type="checkbox" @(user.Roles.Contains(role) ? "checked" : "") />
-                    @role
-                </label>
-            }
-            <button class="saveButtonRoles" onclick="assignRoles('@user.UserId')">Save Roles</button>
-            <a asp-page-handler="DeleteUser" asp-route-userId="@user.UserId" class="delete-button-right">Delete User</a>
-        </div>
-    </div>
-}
+    }
 </div>
 
 <h2>Listing Reviews</h2>
 
 <div class="big-container">
-@foreach (var review in Model.Reviews)
-{
-    <div class="review-container">
-        <div class="review-info">
-            <span>Review ID: @review.Id</span>
-            <span>Listing ID: @review.ServiceId</span> 
-            <span>User ID: @review.UserId</span>
-            <span>Rating: @review.Rating</span>
-            <span>Review Text: @review.ReviewText</span>
-            <span>Sentiment Score: @review.SentimentScore</span>
-            <a asp-page-handler="DeleteReview" asp-route-reviewId="@review.Id" class="delete-button-right">Delete Review</a>
+    @foreach (var review in Model.Reviews)
+    {
+        <div class="review-container">
+            <div class="review-info">
+                <span>Review ID: @review.Id</span>
+                <span>Listing ID: @review.ServiceId</span> 
+                <span>User ID: @review.UserId</span>
+                <span>User Name: @review.User.FirstName @review.User.LastName</span>
+                <span>Rating: @review.Rating</span>
+                <span>Review Text: @review.ReviewText</span>
+                <span>Sentiment Score: @review.SentimentScore</span>
+                <a asp-page-handler="DeleteReview" asp-route-reviewId="@review.Id" class="delete-button-right">Delete Review</a>
+            </div>
         </div>
-    </div>
-}
-    </div>
-
+    }
+</div>

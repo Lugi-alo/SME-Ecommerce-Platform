@@ -27,12 +27,16 @@ namespace Dissertation.Pages.Tourist
             {
                 ServiceListing = await _context.ServiceListings
                     .Include(sl => sl.Reviews)
+                    .ThenInclude(r => r.User) // Include the User navigation property
                     .FirstOrDefaultAsync(sl => sl.Id == serviceId);
 
                 if (ServiceListing == null)
                 {
                     return NotFound();
                 }
+
+                // Optionally, you can assign the Reviews separately if you need them
+                Reviews = ServiceListing.Reviews.ToList();
 
                 return Page();
             }

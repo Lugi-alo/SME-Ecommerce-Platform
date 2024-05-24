@@ -1,8 +1,8 @@
 using Dissertation.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,6 +56,22 @@ namespace Dissertation.Pages.Admin
             Reviews = await _context.Reviews.ToListAsync();
         }
 
+        public async Task<IActionResult> OnPostSaveRoleAsync(string userId, List<string> roles)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            await _userManager.RemoveFromRolesAsync(user, currentRoles);
+
+            await _userManager.AddToRolesAsync(user, roles);
+
+            return RedirectToPage();
+        }
+
         public async Task<IActionResult> OnGetDeleteUserAsync(string userId)
         {
             if (userId == null)
@@ -76,18 +92,6 @@ namespace Dissertation.Pages.Admin
             {
                 return BadRequest(result.Errors.Select(e => e.Description));
             }
-        }
-
-        public async Task<IActionResult> OnPostToggleAccountStatusAsync(string userId)
-        {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return Page();
-            }
-            user.LockoutEnabled = !user.LockoutEnabled;
-            await _userManager.UpdateAsync(user);
-            return RedirectToPage();
         }
 
         public async Task<IActionResult> OnGetDeleteReviewAsync(int reviewId)
