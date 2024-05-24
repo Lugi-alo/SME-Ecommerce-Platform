@@ -130,3 +130,7 @@ _Pvt_Extensions
 
 # Python Byte Files
 __pycache__/
+
+# SQLite Database files
+*.db-wal
+*.db-shm
