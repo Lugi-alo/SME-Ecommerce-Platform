@@ -127,3 +127,6 @@ _Pvt_Extensions
 *.rdl.data
 *.bim.layout
 *.bim_*.settings
+
+# Python Byte Files
+__pycache__/
