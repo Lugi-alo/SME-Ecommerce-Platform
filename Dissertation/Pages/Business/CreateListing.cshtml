@@ -1,0 +1,53 @@
+﻿@page
+@model Dissertation.Pages.Business.CreateListingModel
+@{
+    ViewData["Title"] = "Add Service Listings";
+    Layout = "_Layout";
+}
+
+<div class="createListing-container">
+    <h2>Add/Edit Service Listing</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" asp-for="ServiceListings.Id" />
+
+        <div class="form-group">
+            <label asp-for="ServiceListings.Name" class="form-title"></label>
+            <input asp-for="ServiceListings.Name" class="form-control nameControl" />
+            <span asp-validation-for="ServiceListings.Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group-desc">
+            <label asp-for="ServiceListings.Description" class="form-title"></label>
+            <textarea asp-for="ServiceListings.Description" class="form-control descControl"></textarea>
+            <span asp-validation-for="ServiceListings.Description" class="text-danger"></span>
+        </div>
+
+        <div class="form-group-price">
+            <label asp-for="ServiceListings.Price" class="form-title"></label>
+            <input asp-for="ServiceListings.Price" class="form-control priceControl" />
+            <span asp-validation-for="ServiceListings.Price" class="text-danger"></span>
+        </div>
+
+        <div class="form-group-category">
+            <label asp-for="ServiceListings.Category" class="form-title"></label>
+            <input asp-for="ServiceListings.Category" class="form-control categoryControl" />
+            <span asp-validation-for="ServiceListings.Category" class="text-danger"></span>
+        </div>
+
+        <div class="form-group-country">
+            <label asp-for="ServiceListings.Country" class="form-title"> </label>
+            <input asp-for="ServiceListings.Country" class="form-control countryControl" />
+            <span asp-validation-for="ServiceListings.Country" class="text-danger"></span>
+        </div>
+
+        <div class="form-group-image">
+            <label class="form-title">Upload Image</label>
+            <input type="file" name="imageFile" class="form-control imageContorl" />
+        </div>
+
+        <button type="submit" class="submitListing">Save Listing</button>
+    </form>
+</div>

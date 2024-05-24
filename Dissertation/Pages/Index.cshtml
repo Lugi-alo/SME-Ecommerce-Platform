@@ -1,0 +1,132 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+    Layout = "_Layout";
+}
+
+<head>
+    <script src="~/script/script.js?v=3" defer></script>
+    <script src="~/script/Slideshow.js" defer> </script>
+</head>
+
+<body>
+    <div class="slideshow fade">
+        <div class="container">
+            <div class="image spain"></div>
+            <div class="title">Spain</div>
+            <div class="message-info">Located on the Iberian Peninsula, Spain is a captivating destination for those who seek a rich blend of history and culture. It is renowned for vibrant cities like the bustling metropolis of Barcelona, and the capital city Madrid. Enjoy the cultural tapestry woven with flamenco music and dance, and festivals such as La Tomatina and Semana Santa.</div>
+        </div>
+
+        <div class="container">
+            <div class="image iceland"></div>
+            <div class="title">Iceland</div>
+            <div class="message-info">A dream destination for adventurers and nature enthusiasts. Known for its dramatic landscapes featuring glaciers, geysers, volcanoes, and waterfalls at every turn. Take up the opportunity to indulge in geothermal hot springs or even witness the mesmerizing Northern Lights during winter months.</div>
+        </div>
+
+        <div class="container">
+            <div class="image netherlands"></div>
+            <div class="title">Netherlands</div>
+            <div class="message-info">Often referred to as Holland, it is a country of landscapes, iconic windmills. Don't miss the chance to explore world-class museums such as the Van Gogh Museum or indulge in Dutch delicacies like stroopwafels.</div>
+        </div>
+
+        <button id="prevButton">&#8249;</button>
+        <button id="nextButton">&#8250;</button>
+    </div>
+
+    <div class="welcome-container" 
+        <h2> Welcome to our site.</h2>
+        <p> Browse through a variety of accomodation throughout the whole of Europe.</p>
+    </div>
+
+    <div class="whole-container">
+        <h3 class="benefit-title"> Why Choose Us?</h3>
+     <div class="benefits-container">
+         <div class="benefit">
+             <div class="img-review"> </div>
+            <h4 class="subheading"> Expert Review Analysis </h4>
+            <p class="subtext"> Our site uses artificial intelligence to bring you the best and most accurate review ratings!</p>
+        </div>
+        <div class="benefit">
+            <div class="img-data"> </div>
+            <h4 class="subheading"> Top Quality Data Analytics </h4>
+            <p class="subtext"> From review ratings and descriptions, to your page view and time spent, you can rely on us to make informed decisions</p>
+        </div>
+        <div class="benefit">
+            <div class="img-chat"> </div>
+            <h4 class="subheading"> Instant Chat Advice </h4>
+            <p class="subtext"> Our site uses an instant chat advice center to help you with any queries you may have! </p>
+         </div>
+    </div>
+    </div>
+
+    <div class="search-container">
+    <form method="post" asp-page-handler="Search" class="search-form">
+        <div>
+            <input type="text" id="searchInput" name="searchText" placeholder="Search by name">
+            <select id="categoryFilter" name="categoryFilter">
+                <option value="">Filter</option>
+                <option value="Hotel">Hotel</option>
+                <option value="Villa">Villa</option>
+            </select>
+            <button type="submit" id="searchButton">Search</button>
+            <button type="button" id="resetButton" onclick="window.location.href='@Url.Page("Index")'">Reset</button>
+        </div>
+    </form>
+    </div>
+
+    <div class="listing-container">
+        @foreach (var listing in Model.AllListings)
+        {
+            <div class="listing-panel">
+                <img class="listing-image" src="@listing.Image" alt="Listing Image">
+                <div class="userInput">
+                    <p class="review-rating">@listing.CalculateAverageRating()⭐</p>
+                    <p class="sentiment-rating">@listing.CalculateAverageSentiment(listing.Reviews)</p>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="listing-details">
+                    <h4>@listing.Name</h4>
+                    <p class="price">Price: £@listing.Price</p>
+                    <div class="action-buttons">
+                        <a href="/Tourist/ViewListing?serviceId=@listing.Id" class="action-left">View Details</a>
+                        @if (Model.IsAuthenticated)
+                        {
+                            <a href="/Tourist/SubmitReview?id=@listing.Id" class="action-right">Leave Review</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+
+                    <link rel="stylesheet" href="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/themes/df-messenger-default.css">
+<script src="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/df-messenger.js"></script>
+<df-messenger
+  location="europe-west2"
+  project-id="travel-chatbot-bpnk"
+  agent-id="6bcf8e33-57aa-4ab3-ba62-600ce029f99d"
+  language-code="en"
+  max-query-length="-1">
+  <df-messenger-chat-bubble
+   chat-title="Travel Bot">
+  </df-messenger-chat-bubble>
+</df-messenger>
+
+</body>
+
+
+<style>
+  df-messenger {
+    z-index: 999;
+    position: fixed;
+    --df-messenger-font-color: #000;
+    --df-messenger-font-family: Roboto Mono;
+    --df-messenger-chat-background: #F4EEE4;
+    --df-messenger-message-user-background: #F2DCD5;
+    --df-messenger-message-bot-background: #CADEE0;
+    bottom: 16px;
+    right: 16px;
+  }
+</style>

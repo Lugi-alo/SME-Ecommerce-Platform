@@ -1,0 +1,30 @@
+﻿@page
+@model Dissertation.Pages.Business.UpdateListingsModel
+@{
+    ViewData["Title"] = "Current Listings";
+    Layout = "_Layout";
+}
+
+<h2> Your Listings </h2>
+
+
+<div class="listing-container">
+    @foreach (var listing in Model.BusinessListings)
+    {
+        <div class="listing-panel">
+            <img class="listing-image" src="@listing.Image" alt="Listing Image">
+            <div class="listing-details">
+                <h4>@listing.Name</h4>
+                <p class="description"> @listing.Description</p>
+                <p class="price">Price: £@listing.Price</p>
+                <a class="left-edit" asp-page="/Business/CreateListing" asp-route-id="@listing.Id"> Edit </a>
+                <a class="right-delete" asp-page-handler="Delete" asp-route-listingId="@listing.Id" class="btn btn-danger"> Delete Listing</a>
+            </div>
+        </div>
+    }
+</div>
+
+       
+
+
+   

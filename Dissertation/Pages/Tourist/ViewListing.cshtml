@@ -1,0 +1,35 @@
+﻿@page
+@model Dissertation.Pages.Tourist.ViewListingModel
+@{
+    ViewData["Title"] = "Service Listing Details";
+    Layout = "_Layout";
+}
+
+<div class="viewing-listing-container">
+    <h2 class="viewing-title">@Model.ServiceListing.Name</h2>
+    <img class="viewing-image"src="@Model.ServiceListing.Image" alt="Listing Image"/>
+    <p class="viewing-description">@Model.ServiceListing.Description</p>
+    <p class="viewing-price">@Model.ServiceListing.Price</p>
+
+</div>
+
+<div class="viewing-reviews-container">
+    <h3 class="viewing-review-title">Reviews</h3>
+    <div class ="individual">
+    @if (Model.ServiceListing?.Reviews != null && Model.ServiceListing.Reviews.Any())
+    {
+        @foreach (var review in Model.ServiceListing.Reviews)
+        {
+            <div class="review-container">
+                <p>Rating: @review.Rating</p>
+                <p>Review: @review.ReviewText</p>
+                <p> @review.Timestamp</p>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No reviews available for this service listing.</p>
+    }
+    </div>
+</div>

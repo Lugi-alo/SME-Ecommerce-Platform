@@ -1,0 +1,64 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Dissertation.Models
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="~/css/site.css?v=15" />
+    <script src="https://kit.fontawesome.com/55d2860746.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <header>
+        <nav class="nav-bar">
+            <ul class="navbar-nav left">
+                @if (User.IsInRole("Admin"))
+                {
+                    <li class="nav-item">
+                        <a href="/Admin/Dashboard" class="admin-link">Admin Dashboard</a>
+                    </li>
+                }
+                @if (User.IsInRole("BusinessOwner"))
+                {
+                    <li class="nav-item">
+                        <a href="/Business/CreateListing" class="business-link">Create Viewings</a>
+                        <a href="/Business/UpdateListings" class="business-link">Edit Listings</a>
+                        <a href="/Business/Dashboard" class="business-link">Dashboard</a>
+                    </li>
+                }
+                @if (User.IsInRole("RegularUser"))
+                {
+                    <li class="nav-item">
+                        <a href="/ListingUsers" cl2ss="tourist-link">Accommodation</a>
+                    </li>
+                }
+            </ul>
+            <ul class="navbar-nav right">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <li class="nav-item">
+                        <form id="logoutForm" class="form-inline" asp-page="/Shared/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+                            <button class="home-link" type="submit">Logout</button>
+                        </form>
+                    </li>
+                }              
+                @if (!User.Identity.IsAuthenticated)
+                {
+                     <a class="link login" id="register" asp-page="/Authentication">Sign Up</a>
+                }
+                </li class="nav-item">
+                    <a href="/index" class="home-link"> Home </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
