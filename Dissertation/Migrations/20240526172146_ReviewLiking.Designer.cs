@@ -3,6 +3,7 @@ using System;
 using Dissertation.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dissertation.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    partial class AppDataContextModelSnapshot : ModelSnapshot
+    [Migration("20240526172146_ReviewLiking")]
+    partial class ReviewLiking
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.9");
@@ -94,26 +97,6 @@ namespace Dissertation.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Dissertation.Models.Features", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("ServiceListingsId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ServiceListingsId");
-
-                    b.ToTable("Features");
-                });
-
             modelBuilder.Entity("Dissertation.Models.Review", b =>
                 {
                     b.Property<int>("Id")
@@ -178,10 +161,6 @@ namespace Dissertation.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ListingType")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -325,13 +304,6 @@ namespace Dissertation.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Dissertation.Models.Features", b =>
-                {
-                    b.HasOne("Dissertation.Models.ServiceListings", null)
-                        .WithMany("Features")
-                        .HasForeignKey("ServiceListingsId");
-                });
-
             modelBuilder.Entity("Dissertation.Models.Review", b =>
                 {
                     b.HasOne("Dissertation.Models.ServiceListings", "ServiceListings")
@@ -404,8 +376,6 @@ namespace Dissertation.Migrations
 
             modelBuilder.Entity("Dissertation.Models.ServiceListings", b =>
                 {
-                    b.Navigation("Features");
-
                     b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618

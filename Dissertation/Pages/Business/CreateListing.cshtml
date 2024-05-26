@@ -14,6 +14,11 @@
         <input type="hidden" asp-for="ServiceListings.Id" />
 
         <div class="form-group">
+            <label asp-for="ServiceListings.ListingType" class="form-title"></label>
+            <select id="listingType" name="ListingType" asp-for="ServiceListings.ListingType" asp-items="Model.ListingTypes"></select>
+        </div>
+
+        <div class="form-group">
             <label asp-for="ServiceListings.Name" class="form-title"></label>
             <input asp-for="ServiceListings.Name" class="form-control nameControl" />
             <span asp-validation-for="ServiceListings.Name" class="text-danger"></span>
@@ -23,6 +28,15 @@
             <label asp-for="ServiceListings.Description" class="form-title"></label>
             <textarea asp-for="ServiceListings.Description" class="form-control descControl"></textarea>
             <span asp-validation-for="ServiceListings.Description" class="text-danger"></span>
+        </div>
+
+        <div id="accommodationFeatures" style="display:none;">
+            <label>Accommodation Features</label>
+            <div>
+                <label><input type="checkbox" name="Features" value="WiFi" /> WiFi</label>
+                <label><input type="checkbox" name="Features" value="Parking" /> Parking</label>
+                <label><input type="checkbox" name="Features" value="Breakfast" /> Breakfast</label>
+            </div>
         </div>
 
         <div class="form-group-price">
@@ -51,3 +65,5 @@
         <button type="submit" class="submitListing">Save Listing</button>
     </form>
 </div>
+
+<script src="~/script/Listing.js"></script>

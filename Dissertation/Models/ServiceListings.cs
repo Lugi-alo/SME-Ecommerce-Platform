@@ -9,52 +9,54 @@
         public string Category { get; set; }
         public string Country { get; set; }
         public string Image { get; set; }
+        public string ListingType { get; set; }
+        public ICollection<Features> Features { get; set; }
 
         public string BusinessId { get; set; }
         public List<Review> Reviews { get; set; }
 
 
-		public double CalculateAverageRating()
-		{
-			if (Reviews == null || Reviews.Count == 0)
-			{
-				return 0; 
-			}
+        public double CalculateAverageRating()
+        {
+            if (Reviews == null || Reviews.Count == 0)
+            {
+                return 0;
+            }
 
-			int totalRating = Reviews.Sum(r => r.Rating);
-			double averageRating = (double)totalRating / Reviews.Count;
+            int totalRating = Reviews.Sum(r => r.Rating);
+            double averageRating = (double)totalRating / Reviews.Count;
 
-			return averageRating;
-		}
+            return averageRating;
+        }
 
-		public string CalculateAverageSentiment(List<Review> reviews)
-		{
+        public string CalculateAverageSentiment(List<Review> reviews)
+        {
 
-			if (reviews == null || reviews.Count == 0)
-			{
-				return "No reviews";
-			}
+            if (reviews == null || reviews.Count == 0)
+            {
+                return "No reviews";
+            }
 
-			double totalSentimentScore = 0;
-			foreach (var review in reviews)
-			{
-				totalSentimentScore += review.SentimentScore;
-			}
-			double averageSentimentScore = totalSentimentScore / reviews.Count;
+            double totalSentimentScore = 0;
+            foreach (var review in reviews)
+            {
+                totalSentimentScore += review.SentimentScore;
+            }
+            double averageSentimentScore = totalSentimentScore / reviews.Count;
 
-			double threshold = 0.5; 
-			string overallSentiment;
+            double threshold = 0.5;
+            string overallSentiment;
 
-			if (averageSentimentScore > threshold)
-			{
-				overallSentiment = "Positive";
-			}
-			else
-			{
-				overallSentiment = "Negative";
-			}
+            if (averageSentimentScore > threshold)
+            {
+                overallSentiment = "Positive";
+            }
+            else
+            {
+                overallSentiment = "Negative";
+            }
 
-			return overallSentiment;
-		}
-	}
+            return overallSentiment;
+        }
+    }
 }

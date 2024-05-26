@@ -1,11 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Dissertation.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dissertation.Pages.Business
@@ -24,26 +27,26 @@ namespace Dissertation.Pages.Business
         [BindProperty]
         public ServiceListings ServiceListings { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public List<SelectListItem> ListingTypes { get; } = new List<SelectListItem>
         {
-            if (id == null)
-            {
-                ServiceListings = new ServiceListings();
-            }
-            else
-            {
-                ServiceListings = await _context.ServiceListings.FindAsync(id);
-                if (ServiceListings == null)
-                {
-                    return NotFound();
-                }
-            }
+            new SelectListItem { Value = "Accommodation", Text = "Accommodation" },
+            new SelectListItem { Value = "Restaurant", Text = "Restaurant" },
+        };
+
+        // This property will hold the selected features for the service listing
+        [BindProperty]
+        public List<int> SelectedFeatureIds { get; set; }
+
+        // Populate the features dropdown list
+        public async Task<IActionResult> OnGetAsync()
+        {
+            ViewData["Title"] = "Add Service Listings";
+            ServiceListings = new ServiceListings();
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(IFormFile imageFile)
         {
-            
             try
             {
                 if (imageFile != null && imageFile.Length > 0)
@@ -57,45 +60,29 @@ namespace Dissertation.Pages.Business
                     ServiceListings.Image = "/images/" + fileName;
                 }
 
-                var loggedInUserId = _userManager.GetUserId(User);
+                var loggedInUser = await _userManager.GetUserAsync(User);
 
-                if (ServiceListings.Id == 0)
+                if (loggedInUser != null)
                 {
-                    ServiceListings.BusinessId = loggedInUserId;
-
-                    _context.ServiceListings.Add(ServiceListings);
-                    Console.WriteLine("Added new service listing.");
-                }
-                else
-                {
-                    if (ServiceListings.BusinessId == null)
-                    {
-                        ServiceListings.BusinessId = loggedInUserId;
-                    }
-
-                    _context.Attach(ServiceListings).State = EntityState.Modified;
-                    Console.WriteLine("Modified existing service listing.");
+                    ServiceListings.BusinessId = loggedInUser.Id;
                 }
 
+                // Add selected features to the service listing
+                if (SelectedFeatureIds != null)
+                {
+                    ServiceListings.Features = await _context.Features.Where(f => SelectedFeatureIds.Contains(f.Id)).ToListAsync();
+                }
+
+                _context.ServiceListings.Add(ServiceListings);
                 await _context.SaveChangesAsync();
-                Console.WriteLine("Changes saved successfully.");
 
                 return RedirectToPage("/Index");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while saving the listing: {ex.Message}");
                 ModelState.AddModelError(string.Empty, $"An error occurred while saving the listing: {ex.Message}");
                 return Page();
             }
-        }
-
-        private bool IsImageFile(IFormFile file)
-        {
-            return file.ContentType.ToLower() == "image/jpeg" ||
-                   file.ContentType.ToLower() == "image/png" ||
-                   file.ContentType.ToLower() == "image/gif" ||
-                   file.ContentType.ToLower() == "image/svg+xml";
         }
     }
 }

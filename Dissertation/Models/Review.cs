@@ -8,10 +8,9 @@
         public int Rating { get; set; }
         public DateTime Timestamp { get; set; }
         public double SentimentScore { get; set; }
-
+        
+   
         public int LikeCount { get; set; }
-
-
         public int ServiceId { get; set; }
         public ServiceListings ServiceListings { get; set; }
 

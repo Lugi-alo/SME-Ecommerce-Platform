@@ -8,6 +8,7 @@ namespace Dissertation.Models
         public AppDataContext(DbContextOptions<AppDataContext> options) : base(options) { }
         public DbSet<ServiceListings> ServiceListings { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<Features> Features { get; set; }
 
 
     }
