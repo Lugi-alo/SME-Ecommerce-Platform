@@ -5,6 +5,83 @@
     font-size: 10px;
 }
 
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* Close button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+    .feature-item input[type="checkbox"] {
+        margin-right: 10px;
+    }
+
+.img-breakfast, .img-car, .img-wifi, .img-bar, .img-restaurant {
+    width: 16px;
+    height: 16px; 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-right: 10px;
+}
+
+.img-breakfast {
+    background-image: url('../images/ammenties/breakfastIcon.png');
+}
+
+.img-car {
+    background-image: url('../images/ammenties/carIcon.png');
+}
+
+.img-wifi {
+    background-image: url('../images/ammenties/wifiIcon.png');
+}
+
+.img-bar {
+    background-image: url('../images/ammenties/barIcon.png');
+}
+
+.img-restaurant {
+    background-image: url('../images/ammenties/restuarantIcon.png');
+}
+
+
 .title {
     font-size: 70px;
     position: absolute;
@@ -76,32 +153,33 @@ h3.chart-title {
 }
 
 .img-review {
-    background-image: url('../images/reviewIcon.png');
+    background-image: url('../images/icons/reviewIcon.png');
     height: 62px;
     background-position: center;
     background-repeat: no-repeat;
 }
 
 .img-data {
-    background-image: url('../images/dataIcon.png');
+    background-image: url('../images/icons/dataIcon.png');
     height: 62px;
     background-position: center;
     background-repeat: no-repeat;
 }
 
 .img-chat {
-    background-image: url('../images/chatIcon.png');
+    background-image: url('../images/icons/chatIcon.png');
     height: 62px;
     background-position: center;
     background-repeat: no-repeat;
 }
 
 .likeButton {
-    background-image: url('../images/likeIcon.png');
+    background-image: url('../images/icons/likeIcon.png');
     height: 62px;
     background-position: center;
     background-repeat: no-repeat;
 }
+
 
 .no-button {
     height: 62px;

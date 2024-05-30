@@ -1,5 +1,4 @@
-﻿// Move your script to the end of the HTML body or use event listener for DOMContentLoaded
-document.addEventListener("DOMContentLoaded", function () {
+﻿document.addEventListener("DOMContentLoaded", function () {
     let slideIndex = 0;
     let slides = document.querySelectorAll(".container");
 

@@ -30,13 +30,9 @@
             <span asp-validation-for="ServiceListings.Description" class="text-danger"></span>
         </div>
 
-        <div id="accommodationFeatures" style="display:none;">
-            <label>Accommodation Features</label>
-            <div>
-                <label><input type="checkbox" name="Features" value="WiFi" /> WiFi</label>
-                <label><input type="checkbox" name="Features" value="Parking" /> Parking</label>
-                <label><input type="checkbox" name="Features" value="Breakfast" /> Breakfast</label>
-            </div>
+        <div class="form-group">
+            <button type="button" id="featuresButton">Select Features</button>
+            <div id="selectedFeatures"></div>
         </div>
 
         <div class="form-group-price">
@@ -52,18 +48,48 @@
         </div>
 
         <div class="form-group-country">
-            <label asp-for="ServiceListings.Country" class="form-title"> </label>
+            <label asp-for="ServiceListings.Country" class="form-title"></label>
             <input asp-for="ServiceListings.Country" class="form-control countryControl" />
             <span asp-validation-for="ServiceListings.Country" class="text-danger"></span>
         </div>
 
         <div class="form-group-image">
             <label class="form-title">Upload Image</label>
-            <input type="file" name="imageFile" class="form-control imageContorl" />
+            <input type="file" name="imageFile" class="form-control imageControl" />
         </div>
 
         <button type="submit" class="submitListing">Save Listing</button>
     </form>
-</div>
 
-<script src="~/script/Listing.js"></script>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <label>Accommodation Features</label>
+            <div id="accommodationFeatures">
+                <label class="feature-item">
+                    <input type="checkbox" name="Features" value="WiFi" />
+                    <span class="img-wifi"></span> WiFi
+                </label>
+                <label class="feature-item">
+                    <input type="checkbox" name="Features" value="Parking" />
+                    <span class="img-car"></span> Parking
+                </label>
+                <label class="feature-item">
+                    <input type="checkbox" name="Features" value="Breakfast" />
+                    <span class="img-breakfast"></span> Free Breakfast
+                </label>
+                <label class="feature-item">
+                    <input type="checkbox" name="Features" value="Restaurant" />
+                    <span class="img-restaurant"></span> Restaurant
+                </label>
+                <label class="feature-item">
+                    <input type="checkbox" name="Features" value="Bar" />
+                    <span class="img-bar"></span> Bar / Lounge
+                </label>
+            </div>
+            <button type="button" id="saveButton">Save</button>
+        </div>
+    </div>
+
+
+<script src="~/script/Listing.js?v=1"></script>
