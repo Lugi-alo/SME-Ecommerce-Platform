@@ -15,8 +15,10 @@
 
         <div class="form-group">
             <label asp-for="ServiceListings.ListingType" class="form-title"></label>
-            <select id="listingType" name="ListingType" asp-for="ServiceListings.ListingType" asp-items="Model.ListingTypes"></select>
+            <select id="listingType" name="ServiceListings.ListingType" class="form-control" asp-items="Model.ListingTypes"></select>
+            <span asp-validation-for="ServiceListings.ListingType" class="text-danger"></span>
         </div>
+
 
         <div class="form-group">
             <label asp-for="ServiceListings.Name" class="form-title"></label>
@@ -61,35 +63,24 @@
         <button type="submit" class="submitListing">Save Listing</button>
     </form>
 
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <label>Accommodation Features</label>
-            <div id="accommodationFeatures">
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 class="modal-title">Accommodation Features</h2>
+        <div id="accommodationFeatures">
+            @foreach (var feature in Model.Features)
+            {
                 <label class="feature-item">
-                    <input type="checkbox" name="Features" value="WiFi" />
-                    <span class="img-wifi"></span> WiFi
-                </label>
-                <label class="feature-item">
-                    <input type="checkbox" name="Features" value="Parking" />
-                    <span class="img-car"></span> Parking
-                </label>
-                <label class="feature-item">
-                    <input type="checkbox" name="Features" value="Breakfast" />
-                    <span class="img-breakfast"></span> Free Breakfast
-                </label>
-                <label class="feature-item">
-                    <input type="checkbox" name="Features" value="Restaurant" />
-                    <span class="img-restaurant"></span> Restaurant
-                </label>
-                <label class="feature-item">
-                    <input type="checkbox" name="Features" value="Bar" />
-                    <span class="img-bar"></span> Bar / Lounge
-                </label>
-            </div>
-            <button type="button" id="saveButton">Save</button>
+                    <input type="checkbox" name="selectedFeatureIds" value="@feature.Id" />
+                        <span class="img-db-icons" style="background-image:url('../@feature.IconPath');"></span> @feature.Name
+                    </label>
+            }
         </div>
+        <button type="button" id="modalButton">Save</button>
     </div>
+</div>
+
+</div>
 
 
-<script src="~/script/Listing.js?v=1"></script>
+<script src="~/script/Listing.js?v=3"></script>

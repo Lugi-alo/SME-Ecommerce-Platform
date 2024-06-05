@@ -1,15 +1,16 @@
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Dissertation.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging;
 
 namespace Dissertation.Pages.Business
 {
@@ -27,28 +28,39 @@ namespace Dissertation.Pages.Business
         [BindProperty]
         public ServiceListings ServiceListings { get; set; }
 
+        public List<Features> Features { get; set; }
+
         public List<SelectListItem> ListingTypes { get; } = new List<SelectListItem>
         {
             new SelectListItem { Value = "Accommodation", Text = "Accommodation" },
             new SelectListItem { Value = "Restaurant", Text = "Restaurant" },
         };
 
-        // This property will hold the selected features for the service listing
-        [BindProperty]
-        public List<int> SelectedFeatureIds { get; set; }
-
-        // Populate the features dropdown list
-        public async Task<IActionResult> OnGetAsync()
+        public async Task OnGetAsync()
         {
-            ViewData["Title"] = "Add Service Listings";
+            Console.WriteLine("Function calledd");
             ServiceListings = new ServiceListings();
-            return Page();
+            Features = await _context.Features.ToListAsync();
+            foreach (var feature in Features)
+            {
+                Console.WriteLine($"Feature: {feature.Name}, IconPath: {feature.IconPath}");
+            }
+            Console.WriteLine("no featuees present");
+
         }
 
-        public async Task<IActionResult> OnPostAsync(IFormFile imageFile)
+        public async Task<IActionResult> OnPostAsync(IFormFile imageFile, List<int> selectedFeatureIds)
         {
             try
             {
+                if (selectedFeatureIds == null || !selectedFeatureIds.Any())
+                {
+                    Console.WriteLine("At least one feature must be selected.");
+                    return Page();
+                }
+
+                ServiceListings = new ServiceListings();
+
                 if (imageFile != null && imageFile.Length > 0)
                 {
                     var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
@@ -61,17 +73,15 @@ namespace Dissertation.Pages.Business
                 }
 
                 var loggedInUser = await _userManager.GetUserAsync(User);
-
                 if (loggedInUser != null)
                 {
                     ServiceListings.BusinessId = loggedInUser.Id;
                 }
 
-                // Add selected features to the service listing
-                if (SelectedFeatureIds != null)
-                {
-                    ServiceListings.Features = await _context.Features.Where(f => SelectedFeatureIds.Contains(f.Id)).ToListAsync();
-                }
+                ServiceListings.Features = new List<Features>();
+
+                var selectedFeatures = _context.Features.Where(f => selectedFeatureIds.Contains(f.Id)).ToList();
+                ServiceListings.Features.AddRange(selectedFeatures);
 
                 _context.ServiceListings.Add(ServiceListings);
                 await _context.SaveChangesAsync();
@@ -80,7 +90,7 @@ namespace Dissertation.Pages.Business
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, $"An error occurred while saving the listing: {ex.Message}");
+                Console.WriteLine($"An error occurred while saving the listing: {ex.Message}");
                 return Page();
             }
         }

@@ -1,11 +1,10 @@
 using Dissertation.Models;
+//using Dissertation.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
-using Python.Runtime;
-
 
 var builder = WebApplication.CreateBuilder(args);
 var Configuration = builder.Configuration;
@@ -13,8 +12,6 @@ var Configuration = builder.Configuration;
 // Add services
 builder.Services.AddDbContext<AppDataContext>(options =>
     options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-
-Runtime.PythonDLL = @"C:\Users\ejolo\AppData\Local\Programs\Python\Python39\python39.dll";
 
 builder.Services.AddRazorPages();
 
@@ -29,14 +26,14 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 .AddDefaultTokenProviders()
 .AddEntityFrameworkStores<AppDataContext>();
 
-// Add the TextAnalyser service
-builder.Services.AddScoped<TextAnalyser>();
+// Add the FeatureService
+//builder.Services.AddScoped<FeatureService>();
 
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler(" / Error");
+    app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
 
@@ -50,18 +47,19 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 
-// Seed roles (optional)
+// Seed roles and features (optional)
 using var scope = app.Services.CreateScope();
 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+//var featureService = scope.ServiceProvider.GetRequiredService<FeatureService>();
 
 await SeedRolesAsync(roleManager);
+//await featureService.InsertHardcodedFeaturesAsync();
 
 app.Run();
 
 async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
 {
-    // Define roles
     var roles = new[]
     {
         "Admin",
@@ -71,10 +69,8 @@ async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
 
     foreach (var roleName in roles)
     {
-        // Check if the role exists
         if (!await roleManager.RoleExistsAsync(roleName))
         {
-            // Create the role if it doesn't exist
             var role = new IdentityRole(roleName);
             await roleManager.CreateAsync(role);
         }

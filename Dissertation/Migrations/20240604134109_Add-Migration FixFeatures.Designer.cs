@@ -3,6 +3,7 @@ using System;
 using Dissertation.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dissertation.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    partial class AppDataContextModelSnapshot : ModelSnapshot
+    [Migration("20240604134109_Add-Migration FixFeatures")]
+    partial class AddMigrationFixFeatures
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.9");
@@ -100,15 +103,18 @@ namespace Dissertation.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("IconPath")
+                    b.Property<byte[]>("Icon")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("BLOB");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("ServiceListingsId")
+                    b.Property<int>("ServiceListingId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ServiceListingsId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -331,9 +337,13 @@ namespace Dissertation.Migrations
 
             modelBuilder.Entity("Dissertation.Models.Features", b =>
                 {
-                    b.HasOne("Dissertation.Models.ServiceListings", null)
+                    b.HasOne("Dissertation.Models.ServiceListings", "ServiceListings")
                         .WithMany("Features")
-                        .HasForeignKey("ServiceListingsId");
+                        .HasForeignKey("ServiceListingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ServiceListings");
                 });
 
             modelBuilder.Entity("Dissertation.Models.Review", b =>
