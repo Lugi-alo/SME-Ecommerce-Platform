@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,8 +10,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dissertation.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using NuGet.Packaging;
 
 namespace Dissertation.Pages.Business
 {
@@ -38,29 +37,38 @@ namespace Dissertation.Pages.Business
 
         public async Task OnGetAsync()
         {
-            Console.WriteLine("Function calledd");
-            ServiceListings = new ServiceListings();
             Features = await _context.Features.ToListAsync();
-            foreach (var feature in Features)
-            {
-                Console.WriteLine($"Feature: {feature.Name}, IconPath: {feature.IconPath}");
-            }
-            Console.WriteLine("no featuees present");
-
         }
 
-        public async Task<IActionResult> OnPostAsync(IFormFile imageFile, List<int> selectedFeatureIds)
+        public async Task<IActionResult> OnPostAsync(IFormFile imageFile, string selectedFeatureIds)
         {
             try
             {
-                if (selectedFeatureIds == null || !selectedFeatureIds.Any())
+                // Convert selectedFeatureIds string to a list of integers
+                var featureIds = selectedFeatureIds?.Split(',').Select(int.Parse).ToList();
+
+                // Check if the featureIds is null or empty
+                if (featureIds == null || !featureIds.Any())
                 {
-                    Console.WriteLine("At least one feature must be selected.");
+                    Console.WriteLine("No Features Selected");
+                    ModelState.AddModelError("", "No features selected");
                     return Page();
                 }
 
-                ServiceListings = new ServiceListings();
+                // Initialize ServiceListingFeatures if it is null
+                if (ServiceListings.ServiceListingFeatures == null)
+                {
+                    ServiceListings.ServiceListingFeatures = new List<ServiceListingFeature>();
+                }
 
+                // Set the BusinessId
+                var loggedInUser = await _userManager.GetUserAsync(User);
+                if (loggedInUser != null)
+                {
+                    ServiceListings.BusinessId = loggedInUser.Id;
+                }
+
+                // Check if the image file is provided
                 if (imageFile != null && imageFile.Length > 0)
                 {
                     var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
@@ -72,25 +80,39 @@ namespace Dissertation.Pages.Business
                     ServiceListings.Image = "/images/" + fileName;
                 }
 
-                var loggedInUser = await _userManager.GetUserAsync(User);
-                if (loggedInUser != null)
+                // Add the ServiceListings entity to the context to generate Id
+                _context.ServiceListings.Add(ServiceListings);
+                await _context.SaveChangesAsync();
+
+                // Check if the ServiceListings.Id is generated
+                if (ServiceListings.Id == 0)
                 {
-                    ServiceListings.BusinessId = loggedInUser.Id;
+                    ModelState.AddModelError("", "ServiceListings Id not generated");
+                    return Page();
                 }
 
-                ServiceListings.Features = new List<Features>();
+                // Add selected features to the ServiceListingFeatures
+                foreach (var featureId in featureIds)
+                {
+                    var feature = await _context.Features.FindAsync(featureId);
+                    if (feature != null)
+                    {
+                        ServiceListings.ServiceListingFeatures.Add(new ServiceListingFeature
+                        {
+                            ServiceListingsId = ServiceListings.Id,
+                            FeaturesId = featureId
+                        });
+                    }
+                }
 
-                var selectedFeatures = _context.Features.Where(f => selectedFeatureIds.Contains(f.Id)).ToList();
-                ServiceListings.Features.AddRange(selectedFeatures);
-
-                _context.ServiceListings.Add(ServiceListings);
+                // Save changes including the associated features
                 await _context.SaveChangesAsync();
 
                 return RedirectToPage("/Index");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while saving the listing: {ex.Message}");
+                ModelState.AddModelError("", $"An error occurred while saving the listing: {ex.Message}");
                 return Page();
             }
         }

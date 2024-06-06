@@ -3,6 +3,7 @@ using System;
 using Dissertation.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dissertation.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    partial class AppDataContextModelSnapshot : ModelSnapshot
+    [Migration("20240606014749_CheckFeatures")]
+    partial class CheckFeatures
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.9");
@@ -162,9 +165,14 @@ namespace Dissertation.Migrations
                     b.Property<int>("FeaturesId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("ServiceListingsId1")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("ServiceListingsId", "FeaturesId");
 
                     b.HasIndex("FeaturesId");
+
+                    b.HasIndex("ServiceListingsId1");
 
                     b.ToTable("ServiceListingFeature");
                 });
@@ -361,16 +369,20 @@ namespace Dissertation.Migrations
             modelBuilder.Entity("Dissertation.Models.ServiceListingFeature", b =>
                 {
                     b.HasOne("Dissertation.Models.Features", "Features")
-                        .WithMany("ServiceListingFeatures")
+                        .WithMany()
                         .HasForeignKey("FeaturesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Dissertation.Models.ServiceListings", "ServiceListings")
-                        .WithMany("ServiceListingFeatures")
+                        .WithMany()
                         .HasForeignKey("ServiceListingsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Dissertation.Models.ServiceListings", null)
+                        .WithMany("ServiceListingFeatures")
+                        .HasForeignKey("ServiceListingsId1");
 
                     b.Navigation("Features");
 
@@ -426,11 +438,6 @@ namespace Dissertation.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Dissertation.Models.Features", b =>
-                {
-                    b.Navigation("ServiceListingFeatures");
                 });
 
             modelBuilder.Entity("Dissertation.Models.ServiceListings", b =>

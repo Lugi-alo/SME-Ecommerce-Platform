@@ -1,45 +1,39 @@
-﻿document.addEventListener("DOMContentLoaded", function () {
-    var modal = document.getElementById("modal");
+﻿    document.addEventListener("DOMContentLoaded", function () {
+        var modal = document.getElementById("modal");
     var featuresButton = document.getElementById("featuresButton");
     var saveButton = document.getElementById("modalButton");
     var closeButton = document.getElementsByClassName("close")[0];
 
     featuresButton.onclick = function () {
         modal.style.display = "block";
-    }
+        }
 
     closeButton.onclick = function () {
         modal.style.display = "none";
-    }
+        }
 
     saveButton.onclick = function () {
-        var checkboxes = document.querySelectorAll("#accommodationFeatures input[type='checkbox']");
-        var selectedFeatureNames = [];
-        checkboxes.forEach(function (checkbox) {
-            if (checkbox.checked) {
-                selectedFeatureNames.push(checkbox.value);
-            }
-        });
+            var checkboxes = document.querySelectorAll("#accommodationFeatures .featureCheckbox");
+    var selectedFeatureIds = [];
+    checkboxes.forEach(function (checkbox) {
+                if (checkbox.checked) {
+        selectedFeatureIds.push(checkbox.value);
+                }
+            });
 
-        // Debugging: Output selected feature names to console
-        console.log("Selected Feature Names:", selectedFeatureNames);
+    console.log("Selected Feature IDs:", selectedFeatureIds);
 
-        var selectedFeatureNamesInput = document.createElement("input");
-        selectedFeatureNamesInput.setAttribute("type", "hidden");
-        selectedFeatureNamesInput.setAttribute("name", "selectedFeatureNames");
-        selectedFeatureNamesInput.setAttribute("value", selectedFeatureNames.join(","));
-        document.querySelector("form").appendChild(selectedFeatureNamesInput);
+    document.getElementById("selectedFeatureIds").value = selectedFeatureIds.join(",");
 
-        var selectedFeaturesDiv = document.getElementById("selectedFeatures");
-        selectedFeaturesDiv.innerHTML = "Selected Features: " + selectedFeatureNames.join(", ");
+    var selectedFeaturesDiv = document.getElementById("selectedFeatures");
+    selectedFeaturesDiv.innerHTML = "Selected Features: " + selectedFeatureIds.join(", ");
 
-        modal.style.display = "none";
-    }
-
+    modal.style.display = "none";
+        }
 
     window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
+            if (event.target == modal) {
+        modal.style.display = "none";
+            }
         }
-    }
-});
+    });

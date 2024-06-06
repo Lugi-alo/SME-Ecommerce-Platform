@@ -10,11 +10,11 @@
         public string Country { get; set; }
         public string Image { get; set; }
         public string ListingType { get; set; }
-        public ICollection<Features> Features { get; set; }
 
         public string BusinessId { get; set; }
         public List<Review> Reviews { get; set; }
 
+        public ICollection<ServiceListingFeature> ServiceListingFeatures { get; set; }
 
         public double CalculateAverageRating()
         {

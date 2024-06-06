@@ -3,6 +3,7 @@ using System;
 using Dissertation.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dissertation.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    partial class AppDataContextModelSnapshot : ModelSnapshot
+    [Migration("20240605211307_FeatureRelationship2")]
+    partial class FeatureRelationship2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.9");
@@ -154,21 +157,6 @@ namespace Dissertation.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("Dissertation.Models.ServiceListingFeature", b =>
-                {
-                    b.Property<int>("ServiceListingsId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("FeaturesId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ServiceListingsId", "FeaturesId");
-
-                    b.HasIndex("FeaturesId");
-
-                    b.ToTable("ServiceListingFeature");
-                });
-
             modelBuilder.Entity("Dissertation.Models.ServiceListings", b =>
                 {
                     b.Property<int>("Id")
@@ -209,6 +197,21 @@ namespace Dissertation.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ServiceListings");
+                });
+
+            modelBuilder.Entity("FeaturesServiceListings", b =>
+                {
+                    b.Property<int>("FeaturesId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ServiceListingsId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("FeaturesId", "ServiceListingsId");
+
+                    b.HasIndex("ServiceListingsId");
+
+                    b.ToTable("FeaturesServiceListings");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -358,23 +361,19 @@ namespace Dissertation.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Dissertation.Models.ServiceListingFeature", b =>
+            modelBuilder.Entity("FeaturesServiceListings", b =>
                 {
-                    b.HasOne("Dissertation.Models.Features", "Features")
-                        .WithMany("ServiceListingFeatures")
+                    b.HasOne("Dissertation.Models.Features", null)
+                        .WithMany()
                         .HasForeignKey("FeaturesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Dissertation.Models.ServiceListings", "ServiceListings")
-                        .WithMany("ServiceListingFeatures")
+                    b.HasOne("Dissertation.Models.ServiceListings", null)
+                        .WithMany()
                         .HasForeignKey("ServiceListingsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Features");
-
-                    b.Navigation("ServiceListings");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -428,16 +427,9 @@ namespace Dissertation.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Dissertation.Models.Features", b =>
-                {
-                    b.Navigation("ServiceListingFeatures");
-                });
-
             modelBuilder.Entity("Dissertation.Models.ServiceListings", b =>
                 {
                     b.Navigation("Reviews");
-
-                    b.Navigation("ServiceListingFeatures");
                 });
 #pragma warning restore 612, 618
         }

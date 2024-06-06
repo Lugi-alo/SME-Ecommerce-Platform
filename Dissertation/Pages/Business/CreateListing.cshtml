@@ -19,7 +19,6 @@
             <span asp-validation-for="ServiceListings.ListingType" class="text-danger"></span>
         </div>
 
-
         <div class="form-group">
             <label asp-for="ServiceListings.Name" class="form-title"></label>
             <input asp-for="ServiceListings.Name" class="form-control nameControl" />
@@ -60,27 +59,29 @@
             <input type="file" name="imageFile" class="form-control imageControl" />
         </div>
 
+        <input type="hidden" id="selectedFeatureIds" name="selectedFeatureIds" />
+
         <button type="submit" class="submitListing">Save Listing</button>
     </form>
 
-<div id="modal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2 class="modal-title">Accommodation Features</h2>
-        <div id="accommodationFeatures">
-            @foreach (var feature in Model.Features)
-            {
-                <label class="feature-item">
-                    <input type="checkbox" name="selectedFeatureIds" value="@feature.Id" />
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 class="modal-title">Accommodation Features</h2>
+            <div id="accommodationFeatures">
+                @foreach (var feature in Model.Features)
+                {
+                    <label class="feature-item">
+                        <input type="checkbox" class="featureCheckbox" value="@feature.Id" />
                         <span class="img-db-icons" style="background-image:url('../@feature.IconPath');"></span> @feature.Name
                     </label>
-            }
+                }
+            </div>
+            <button type="button" id="modalButton">Save</button>
         </div>
-        <button type="button" id="modalButton">Save</button>
     </div>
 </div>
 
-</div>
+<script src="~/script/Listing.js?v=4"></script>
 
 
-<script src="~/script/Listing.js?v=3"></script>

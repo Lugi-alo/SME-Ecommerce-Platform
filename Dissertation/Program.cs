@@ -1,5 +1,4 @@
 using Dissertation.Models;
-//using Dissertation.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -53,26 +52,6 @@ var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityR
 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
 //var featureService = scope.ServiceProvider.GetRequiredService<FeatureService>();
 
-await SeedRolesAsync(roleManager);
 //await featureService.InsertHardcodedFeaturesAsync();
 
 app.Run();
-
-async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
-{
-    var roles = new[]
-    {
-        "Admin",
-        "BusinessOwner",
-        "RegularUser"
-    };
-
-    foreach (var roleName in roles)
-    {
-        if (!await roleManager.RoleExistsAsync(roleName))
-        {
-            var role = new IdentityRole(roleName);
-            await roleManager.CreateAsync(role);
-        }
-    }
-}
