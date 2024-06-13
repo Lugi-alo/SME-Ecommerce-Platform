@@ -5,42 +5,78 @@
     Layout = "_Layout";
 }
 
-<div class="viewing-listing-container">
-    <h2 class="viewing-title">@Model.ServiceListing.Name</h2>
-    <img class="viewing-image"src="@Model.ServiceListing.Image" alt="Listing Image"/>
-    <p class="viewing-description">@Model.ServiceListing.Description</p>
-    <p class="viewing-price">@Model.ServiceListing.Price</p>
+<div class="viewListing-container">
+    <h2 class="viewListing-title">@Model.ServiceListing.Name</h2>
+    <img class="viewListing-image" src="@Model.ServiceListing.Image" alt="Listing Image" />
 
-</div>
-
-<div class="viewing-reviews-container">
-    <h3 class="viewing-review-title">Reviews</h3>
-    <div class ="individual">
-    @if (Model.ServiceListing?.Reviews != null && Model.ServiceListing.Reviews.Any())
-    {
-        @foreach (var review in Model.ServiceListing.Reviews)
-        {
-            <div class="review-container">
-                <h3> Left by User: @review.User.FirstName @review.User.LastName</h3>
-                <p> @review.LikeCount</p>
-                <p>Rating: @review.Rating</p>
-                <p>Review: @review.ReviewText</p>
-
-                <form method = "post" asp-page-handler="LikeReview">
-                    <input type="hidden" name="reviewId" value="@review.Id" />
-                        <button class="no-button" type="submit">
-                            <div class="likeButton"> </div>
-                        </button>
-                </form>
-
-                <p> @review.Timestamp</p>
-                <p class="disclaimer"> This review is a subjective opinion left by a user on our platform. These reviews are moderated by the admins.</p>
+    <div class="listing-information-container">
+        <div class="viewing-listing-container">
+            <h3 class="learn-more">Learn More...</h3>
+            <div class="average-rating">
+                <p class="averageRating-title">@Model.AverageRating.ToString("0.0")</p>
+                <span class="stars">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        if (i <= Math.Floor(Model.AverageRating))
+                        {
+                            <span class="star filled">⭐</span>
+                        }
+                        else if (i <= Model.AverageRating)
+                        {
+                            <span class="star half-filled">⭐</span>
+                        }
+                    }
+                </span>
             </div>
-        }
-    }
-    else
-    {
-        <p>No reviews available for this service listing.</p>
-    }
+            <p class="rating-text">As reviewed by @Model.Reviews.Count people.</p>
+            <p class="viewing-description">@Model.ServiceListing.Description</p>
+            <div class="location-container">
+            <div class="location"> </div> @Model.ServiceListing.Country 
+            </div>
+            <p class="viewing-price">@Model.ServiceListing.Price per night</p>
+        </div>
+
+        <div class="visiting-right-container">
+            <h3 class="learn-more">Features</h3>
+            <ul>
+                @foreach (var feature in Model.Features)
+                {
+                    <li class ="feature-list">
+                        <img src="../@feature.IconPath" alt="@feature.Name" class="listing-feature-icons"/>
+                        @feature.Name
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    <div class="viewing-reviews-container">
+        <h3 class="viewing-review-title">Reviews</h3>
+        <div class="individual">
+            @if (Model.ServiceListing?.Reviews != null && Model.ServiceListing.Reviews.Any())
+            {
+                @foreach (var review in Model.ServiceListing.Reviews)
+                {
+                    <div class="review-container">
+                        <div class="user"></div> <p class="review-user">@review.User.FirstName @review.User.LastName</p>
+                        <p>Likes: @review.LikeCount</p>
+                        <p>Rating: @review.Rating</p>
+                        <p>Review: @review.ReviewText</p>
+                        <form method="post" asp-page-handler="LikeReview">
+                            <input type="hidden" name="reviewId" value="@review.Id" />
+                            <button class="no-button" type="submit">
+                                <div class="likeButton"></div>
+                            </button>
+                        </form>
+                        <p>@review.Timestamp</p>
+                        <p class="disclaimer">This review is a subjective opinion left by a user on our platform. These reviews are moderated by the admins.</p>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>No reviews available for this service listing.</p>
+            }
+        </div>
     </div>
 </div>

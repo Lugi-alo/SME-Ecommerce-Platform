@@ -15,19 +15,23 @@ namespace Dissertation.Pages.Tourist
 
         public ServiceListings ServiceListing { get; set; }
         public List<Review> Reviews { get; set; }
+        public List<Features> Features { get; set; }
+        public double AverageRating { get; set; }
 
         public ViewListingModel(AppDataContext context)
         {
             _context = context;
         }
 
-        public async Task<IActionResult> OnGet(int serviceId)
+        public async Task<IActionResult> OnGetAsync(int serviceId)
         {
             try
             {
                 ServiceListing = await _context.ServiceListings
                     .Include(sl => sl.Reviews)
                     .ThenInclude(r => r.User)
+                    .Include(sl => sl.ServiceListingFeatures)
+                    .ThenInclude(slf => slf.Features)
                     .FirstOrDefaultAsync(sl => sl.Id == serviceId);
 
                 if (ServiceListing == null)
@@ -36,6 +40,8 @@ namespace Dissertation.Pages.Tourist
                 }
 
                 Reviews = ServiceListing.Reviews.ToList();
+                Features = ServiceListing.ServiceListingFeatures.Select(slf => slf.Features).ToList();
+                AverageRating = ServiceListing.CalculateAverageRating();
 
                 return Page();
             }

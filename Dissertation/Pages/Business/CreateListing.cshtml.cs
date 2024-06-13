@@ -44,10 +44,8 @@ namespace Dissertation.Pages.Business
         {
             try
             {
-                // Convert selectedFeatureIds string to a list of integers
                 var featureIds = selectedFeatureIds?.Split(',').Select(int.Parse).ToList();
 
-                // Check if the featureIds is null or empty
                 if (featureIds == null || !featureIds.Any())
                 {
                     Console.WriteLine("No Features Selected");
@@ -55,20 +53,17 @@ namespace Dissertation.Pages.Business
                     return Page();
                 }
 
-                // Initialize ServiceListingFeatures if it is null
                 if (ServiceListings.ServiceListingFeatures == null)
                 {
                     ServiceListings.ServiceListingFeatures = new List<ServiceListingFeature>();
                 }
 
-                // Set the BusinessId
                 var loggedInUser = await _userManager.GetUserAsync(User);
                 if (loggedInUser != null)
                 {
                     ServiceListings.BusinessId = loggedInUser.Id;
                 }
 
-                // Check if the image file is provided
                 if (imageFile != null && imageFile.Length > 0)
                 {
                     var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
@@ -80,18 +75,15 @@ namespace Dissertation.Pages.Business
                     ServiceListings.Image = "/images/" + fileName;
                 }
 
-                // Add the ServiceListings entity to the context to generate Id
                 _context.ServiceListings.Add(ServiceListings);
                 await _context.SaveChangesAsync();
 
-                // Check if the ServiceListings.Id is generated
                 if (ServiceListings.Id == 0)
                 {
                     ModelState.AddModelError("", "ServiceListings Id not generated");
                     return Page();
                 }
 
-                // Add selected features to the ServiceListingFeatures
                 foreach (var featureId in featureIds)
                 {
                     var feature = await _context.Features.FindAsync(featureId);
@@ -105,7 +97,6 @@ namespace Dissertation.Pages.Business
                     }
                 }
 
-                // Save changes including the associated features
                 await _context.SaveChangesAsync();
 
                 return RedirectToPage("/Index");

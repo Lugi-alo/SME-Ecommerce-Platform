@@ -50,7 +50,7 @@ namespace Dissertation.Pages.Tourist
             using (Py.GIL()) 
             {
                 dynamic sys = Py.Import("sys");
-                sys.path.append(@"C:\Users\ejolo\OneDrive\Desktop\Dissertation\Dissertation\");
+                sys.path.append(@"C:\Users\ejolo\OneDrive\Desktop\SME-Ecommerce-Platform\Dissertation");
 
                 dynamic sentimentAnalysisScript = Py.Import("sentimentAnalyser");
                 dynamic analysisResult = sentimentAnalysisScript.analyseText(review.ReviewText);

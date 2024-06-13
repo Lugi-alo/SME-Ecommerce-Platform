@@ -1,9 +1,6 @@
 /* Images taken from: https://wallpapercave.com/wp/R5Vj6yD.jpg, https://holidayturn.com/wp-content/uploads/2017/12/Safari-Court-Hotel-Pool.jpg, http://getwallpapers.com/wallpaper/full/6/6/e/795475-most-popular-cool-sunset-backgrounds-3840x2160-for-hd.jpg */
 
-
-.disclaimer {
-    font-size: 10px;
-}
+/* CSS FOR CREATE LISTINGS PAGE */
 
 .modal-title {
     font-size: 20px;
@@ -31,13 +28,11 @@
     margin: auto;
     padding: 20px;
     border: 3px solid #ccc;
-    ;
     width: 50%;
     border-radius: 5px;
     height: 400px;
 }
 
-/* Close button */
 .close {
     color: #aaa;
     float: right;
@@ -45,12 +40,11 @@
     font-weight: bold;
 }
 
-    .close:hover,
-    .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
+.close:hover, .close:focus {
+     color: black;
+     text-decoration: none;
+     cursor: pointer;
+}
 
 #accommodationFeatures {
     display: flex;
@@ -77,6 +71,9 @@
     margin-left: 10px;
 }
 
+/* CSS FOR CREATE LISTING PAGE ENDS*/
+
+/* CSS FOR INDEX PAGE STARTS */
 
 .title {
     font-size: 70px;
@@ -96,6 +93,214 @@
     font-size: 18px;
     width: 50%;
 }
+
+.spain, .iceland, .netherlands {
+    margin: 0;
+    padding: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.spain {
+    background-image: url('../images/spain-sunset.jpg');
+}
+
+.iceland {
+    background-image: url('../images/iceland-sunset.jpg');
+}
+
+.netherlands {
+    background-image: url('../images/netherlands-sunset.jpg');
+}
+
+.image {
+    width: 100%;
+    height: 700px;
+    filter: brightness(80%);
+}
+
+.img-review {
+    background-image: url('../images/icons/reviewIcon.png');
+    height: 62px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
+.img-data {
+    background-image: url('../images/icons/dataIcon.png');
+    height: 62px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.img-chat {
+    background-image: url('../images/icons/chatIcon.png');
+    height: 62px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#prevButton, #nextButton {
+    cursor: pointer;
+    position: absolute;
+    top: 80%;
+    color: #F2DCD5;
+    background: grey;
+    font-size: 25px;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+
+#prevButton {
+    left: 20%;
+}
+
+#nextButton {
+    left: 40%;
+}
+
+/* CSS FOR INDEX PAGE ENDS*/
+/* CSS FOR VIEW LISTING PAGE */
+
+.likeButton {
+    background-image: url('../images/icons/likeIcon.png');
+    height: 62px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.no-button {
+    height: 62px;
+    width: 100px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.location-container, .viewing-listing-container {
+    font-size: 18px;
+}
+
+.user {
+    background-image: url('../images/icons/userIcon.png');
+    height: 62px;
+}
+
+.location {
+    background-image: url('../images/icons/locationIcon.png');
+    width: 25px;
+    height: 25px;
+    background-size: cover;
+    margin-right: 10px;
+}
+
+.user, .location {
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.listing-information-container {
+    background-color: #F2DCD5;
+    border: 2px solid #d3d3d3;
+    margin-left: 5%;
+    margin-right: 5%;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.viewing-listing-container {
+    width: 60%;
+}
+
+.visiting-right-container {
+    width: 40%;
+}
+
+.viewing-review-container {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+    margin-top: 300px;
+}
+
+img.viewListing-image {
+    width: 80%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 30px;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 10px;
+}
+
+.individual {
+    margin-left: 10%;
+    margin-right: 10%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.viewListing-title {
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.listing-feature-icons {
+    width: 25px;
+    height: 25px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.disclaimer {
+    font-size: 10px;
+}
+
+.feature-list {
+    list-style-type: none;
+    margin: 0;
+    font-size: 18px;
+}
+
+.average-rating {
+    display: flex;
+}
+
+.stars {
+    margin-left: 15px;
+    margin-top: 18px;
+}
+
+.averageRating-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.rating-text {
+    margin-top: 5px;
+}
+
+.location-container {
+    display: flex;
+}
+
+/* CSS FOR VIEW LISTING PAGE ENDS*/
+
+
+
+
 
 #submitButton {
     width: 10%;
@@ -119,91 +324,6 @@ h3.chart-title {
     border-radius: 5px;
     padding: 5px;
     text-align: center;
-}
-
-
-.image {
-    width: 100%;
-    height: 700px;
-    filter: brightness(80%);
-}
-
-.spain, .iceland, .netherlands {
-    margin: 0;
-    padding: 0;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-.spain {
-    background-image: url('../images/spain-sunset.jpg');
-}
-
-.iceland {
-    background-image: url('../images/iceland-sunset.jpg');
-}
-
-.netherlands {
-    background-image: url('../images/netherlands-sunset.jpg');
-}
-
-.img-review {
-    background-image: url('../images/icons/reviewIcon.png');
-    height: 62px;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-.img-data {
-    background-image: url('../images/icons/dataIcon.png');
-    height: 62px;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-.img-chat {
-    background-image: url('../images/icons/chatIcon.png');
-    height: 62px;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-.likeButton {
-    background-image: url('../images/icons/likeIcon.png');
-    height: 62px;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-
-.no-button {
-    height: 62px;
-    width: 100px;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-}
-
-#prevButton, #nextButton {
-    cursor: pointer;
-    position: absolute;
-    top: 80%;
-    color: #F2DCD5;
-    background: grey;
-    font-size: 25px;
-    font-weight: bold;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-}
-
-#prevButton {
-    left: 20%;
-}
-
-#nextButton {
-    left: 40%;
 }
 
 .user-menu {
@@ -309,6 +429,10 @@ a#register.link.login {
     color: white;
     font-weight: bold;
     font-size: 18px;
+}
+
+.viewing-listing-container {
+    width 50%;
 }
 
 .form-title {
@@ -652,48 +776,6 @@ canvas {
     color: grey;
 }
 
-
-.viewing-listing-container {
-    background-color: #F2DCD5;
-    border: 2px solid #d3d3d3;
-    padding: 5px;
-    margin-top: 100px;
-    margin-left: 15%;
-    margin-right: 15%;
-    text-align: center;
-}
-
-.viewing-review-container {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 20px;
-    margin-top: 20px;
-}
-
-.individual {
-    margin-left: 10%;
-    margin-right: 10%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-}
-
-.viewing-image {
-    height: 50%;
-    width: 50%;
-}
-
-.viewing-title {
-    margin: 0;
-    margin-top: 20px;
-    padding: 10px;
-}
-
-.viewing-review-title {
-    text-align: center;
-    margin-top: 30px;
-}
-
 h3 {
     text-align: center;
 }
@@ -713,6 +795,9 @@ a.admin-link {
     border: 2px solid #ddd;
     padding: 5px;
 }
+
+
+
 
 
 @media only screen and (max-width: 600px) {
